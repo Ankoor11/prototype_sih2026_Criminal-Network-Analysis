@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NetraLink AI — Crime Intelligence Platform</title>
+  <meta name="description" content="NetraLink AI – Law Enforcement Crime Intelligence & Knowledge Graph Engine" />
+
+  <!-- Fonts: Inter for body, Space Grotesk for headings, JetBrains Mono for data -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- D3.js v7 Engine for Force Graph Visualization -->
+  <script src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
+
+  <!-- Leaflet for Geospatial Map Visualization -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Lucide Icons (clean, consistent SVG icons) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="/static/css/main.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════
+       PALANTIR-STYLE HOME SCREEN (Full Viewport Landing)
+  ══════════════════════════════════════════════════ -->
+  <div class="home-screen" id="home-screen">
+
+    <!-- Animated Background Grid -->
+    <div class="home-bg-grid"></div>
+    <div class="home-bg-glow home-bg-glow-1"></div>
+    <div class="home-bg-glow home-bg-glow-2"></div>
+
+    <!-- Floating Particles (canvas-like decorative nodes) -->
+    <div class="home-particles" id="home-particles"></div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="home-nav">
+      <div class="home-nav-brand">
+        <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="4" fill="#2563eb" opacity="0.2"/>
+          <rect x="0.5" y="0.5" width="27" height="27" rx="3.5" stroke="#3b82f6" stroke-opacity="0.6"/>
+          <path d="M7 14h4.5M14 7v4.5M14 16.5V21M16.5 14H21M14 14m-2 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0z" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span class="home-nav-brand-text">NETRALINK <span class="home-nav-ai">AI</span></span>
+      </div>
+      <div class="home-nav-links">
+        <a href="#features" class="home-nav-link">Capabilities</a>
+        <a href="#architecture" class="home-nav-link">Architecture</a>
+        <a href="#security" class="home-nav-link">Security</a>
+        <button class="home-nav-cta" id="home-enter-nav">Enter Platform →</button>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="home-hero">
+      <div class="home-hero-content">
+        <div class="home-hero-badge">
+          <span class="home-badge-dot"></span>
+          CLASSIFIED · LAW ENFORCEMENT INTELLIGENCE PLATFORM
+        </div>
+        <h1 class="home-hero-title">
+          Criminal Intelligence<br/>
+          <span class="home-hero-accent">Knowledge Graph Engine</span>
+        </h1>
+        <p class="home-hero-desc">
+          NetraLink AI transforms raw police records — FIRs, CDRs, banking logs, and geospatial data — 
+          into a unified temporal knowledge graph. Identify cross-crime syndicates, trace hidden financial 
+          networks, and generate court-admissible, explainable leads with full audit-trail compliance.
+        </p>
+        <div class="home-hero-actions">
+          <button class="home-hero-btn-primary" id="home-enter-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Open Investigative Dashboard
+          </button>
+          <button class="home-hero-btn-outline" onclick="document.getElementById('home-features').scrollIntoView({behavior:'smooth'})">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            Explore Capabilities
+          </button>
+        </div>
+
+        <!-- Live Stats Strip -->
+        <div class="home-stats-strip">
+          <div class="home-stat">
+            <div class="home-stat-number">3,980</div>
+            <div class="home-stat-label">Graph Nodes</div>
+          </div>
+          <div class="home-stat-divider"></div>
+          <div class="home-stat">
+            <div class="home-stat-number">56,750</div>
+            <div class="home-stat-label">Evidence Edges</div>
+          </div>
+          <div class="home-stat-divider"></div>
+          <div class="home-stat">
+            <div class="home-stat-number">7</div>
+            <div class="home-stat-label">Crime Lenses</div>
+          </div>
+          <div class="home-stat-divider"></div>
+          <div class="home-stat">
+            <div class="home-stat-number danger-pulse">4</div>
+            <div class="home-stat-label">Active Alerts</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual (Decorative Graph Illustration) -->
+      <div class="home-hero-visual">
+        <div class="home-graph-visual">
+          <svg viewBox="0 0 400 400" class="home-graph-svg">
+            <!-- Connection Lines -->
+            <line x1="200" y1="80" x2="120" y2="180" stroke="#3b82f6" stroke-width="1.5" opacity="0.4"/>
+            <line x1="200" y1="80" x2="280" y2="160" stroke="#3b82f6" stroke-width="1.5" opacity="0.4"/>
+            <line x1="120" y1="180" x2="80" y2="280" stroke="#059669" stroke-width="1.5" opacity="0.3"/>
+            <line x1="120" y1="180" x2="200" y2="260" stroke="#d97706" stroke-width="1.5" opacity="0.3"/>
+            <line x1="280" y1="160" x2="320" y2="260" stroke="#7c3aed" stroke-width="1.5" opacity="0.3"/>
+            <line x1="280" y1="160" x2="200" y2="260" stroke="#dc2626" stroke-width="1.5" opacity="0.3"/>
+            <line x1="200" y1="260" x2="120" y2="340" stroke="#3b82f6" stroke-width="1.5" opacity="0.3"/>
+            <line x1="200" y1="260" x2="280" y2="340" stroke="#059669" stroke-width="1.5" opacity="0.3"/>
+            <!-- Animated pulse lines -->
+            <line x1="200" y1="80" x2="120" y2="180" stroke="#60a5fa" stroke-width="2" opacity="0" class="home-pulse-line pulse-1"/>
+            <line x1="120" y1="180" x2="200" y2="260" stroke="#fbbf24" stroke-width="2" opacity="0" class="home-pulse-line pulse-2"/>
+            <line x1="280" y1="160" x2="320" y2="260" stroke="#a78bfa" stroke-width="2" opacity="0" class="home-pulse-line pulse-3"/>
+            <!-- Nodes -->
+            <circle cx="200" cy="80" r="16" fill="#dbeafe" stroke="#2563eb" stroke-width="2" class="home-node-anim n1"/>
+            <circle cx="120" cy="180" r="12" fill="#d1fae5" stroke="#059669" stroke-width="2" class="home-node-anim n2"/>
+            <circle cx="280" cy="160" r="14" fill="#fef3c7" stroke="#d97706" stroke-width="2" class="home-node-anim n3"/>
+            <circle cx="80" cy="280" r="10" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2" class="home-node-anim n4"/>
+            <circle cx="200" cy="260" r="18" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5" class="home-node-anim n5"/>
+            <circle cx="320" cy="260" r="11" fill="#dbeafe" stroke="#2563eb" stroke-width="2" class="home-node-anim n6"/>
+            <circle cx="120" cy="340" r="9" fill="#d1fae5" stroke="#059669" stroke-width="1.5" class="home-node-anim n7"/>
+            <circle cx="280" cy="340" r="13" fill="#fef3c7" stroke="#d97706" stroke-width="2" class="home-node-anim n8"/>
+            <!-- Labels -->
+            <text x="200" y="84" text-anchor="middle" fill="#1e3a5f" font-size="8" font-weight="600" font-family="JetBrains Mono">SUSPECT</text>
+            <text x="200" y="264" text-anchor="middle" fill="#7f1d1d" font-size="7" font-weight="600" font-family="JetBrains Mono">NEXUS</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="home-features" id="home-features">
+      <div class="home-section-header">
+        <div class="home-section-label">PLATFORM CAPABILITIES</div>
+        <h2 class="home-section-title">Designed for Law Enforcement Excellence</h2>
+        <p class="home-section-desc">Seven analytical lenses, one unified graph. Every assertion is traceable to primary police records.</p>
+      </div>
+
+      <div class="home-features-grid">
+        <div class="home-feature-card">
+          <div class="home-feature-icon blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 class="home-feature-title">Evidence Integrity</h3>
+          <p class="home-feature-desc">SHA-256 cryptographic hashing for every record. Tamper-evident chain-of-custody with full audit trail compliance.</p>
+          <div class="home-feature-tag">Zero Trust Architecture</div>
+        </div>
+
+        <div class="home-feature-card">
+          <div class="home-feature-icon emerald">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></svg>
+          </div>
+          <h3 class="home-feature-title">Entity Resolution</h3>
+          <p class="home-feature-desc">Human-in-the-loop disambiguation across FIRs, CDRs, and banking records. Fuzzy match with confidence scoring.</p>
+          <div class="home-feature-tag">AI + Human Oversight</div>
+        </div>
+
+        <div class="home-feature-card">
+          <div class="home-feature-icon amber">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3 class="home-feature-title">Financial Forensics</h3>
+          <p class="home-feature-desc">Detect Hawala structuring, rapid layering under ₹50K thresholds, and mule account cascades across banking networks.</p>
+          <div class="home-feature-tag">7 Crime Lenses</div>
+        </div>
+
+        <div class="home-feature-card">
+          <div class="home-feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          </div>
+          <h3 class="home-feature-title">Temporal Knowledge Graph</h3>
+          <p class="home-feature-desc">Force-directed D3.js visualization with animated data-flow. Navigate relationships across time with interactive drill-down.</p>
+          <div class="home-feature-tag">60 FPS Canvas Engine</div>
+        </div>
+
+        <div class="home-feature-card">
+          <div class="home-feature-icon rose">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3 class="home-feature-title">Geospatial Intelligence</h3>
+          <p class="home-feature-desc">Leaflet-powered interactive maps with suspect trajectory tracking, safehouse identification, and co-location analysis.</p>
+          <div class="home-feature-tag">Real-time Tracking</div>
+        </div>
+
+        <div class="home-feature-card">
+          <div class="home-feature-icon indigo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 class="home-feature-title">Explainable Leads</h3>
+          <p class="home-feature-desc">Every lead traces back to primary evidence — CDR logs, banking transactions, and police narratives. Court-admissible intelligence.</p>
+          <div class="home-feature-tag">Audit-Ready Output</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section class="home-architecture" id="architecture">
+      <div class="home-arch-content">
+        <div class="home-arch-left">
+          <div class="home-section-label">SYSTEM ARCHITECTURE</div>
+          <h2 class="home-section-title">11-Stage Intelligence Pipeline</h2>
+          <p class="home-arch-desc">From raw multimodal police records to actionable, explainable leads — every stage is audited, versioned, and tamper-proof.</p>
+          <div class="home-arch-stages">
+            <div class="home-arch-stage">
+              <div class="home-arch-stage-num">01</div>
+              <div>
+                <div class="home-arch-stage-name">Evidence Ingestion</div>
+                <div class="home-arch-stage-sub">FIR, CDR, Bank Statements, Geo Logs</div>
+              </div>
+            </div>
+            <div class="home-arch-stage">
+              <div class="home-arch-stage-num">02</div>
+              <div>
+                <div class="home-arch-stage-name">NLP Entity Extraction</div>
+                <div class="home-arch-stage-sub">Multilingual NER (Hindi, Urdu, Tamil, English)</div>
+              </div>
+            </div>
+            <div class="home-arch-stage">
+              <div class="home-arch-stage-num">03</div>
+              <div>
+                <div class="home-arch-stage-name">Graph Construction</div>
+                <div class="home-arch-stage-sub">Temporal multi-relational knowledge graph</div>
+              </div>
+            </div>
+            <div class="home-arch-stage">
+              <div class="home-arch-stage-num">04</div>
+              <div>
+                <div class="home-arch-stage-name">Lead Generation</div>
+                <div class="home-arch-stage-sub">Cross-crime bridge detection & syndicate radar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="home-arch-right">
+          <div class="home-arch-visual">
+            <div class="home-arch-pipeline-flow">
+              <div class="home-pipe-node pipe-start">RAW DATA</div>
+              <div class="home-pipe-arrow">→</div>
+              <div class="home-pipe-node pipe-mid">NLP ENGINE</div>
+              <div class="home-pipe-arrow">→</div>
+              <div class="home-pipe-node pipe-mid">GRAPH BUILD</div>
+              <div class="home-pipe-arrow">→</div>
+              <div class="home-pipe-node pipe-end">LEADS</div>
+            </div>
+            <div class="home-arch-metrics">
+              <div class="home-arch-metric">
+                <div class="home-arch-metric-val">< 2s</div>
+                <div class="home-arch-metric-label">Pipeline Latency</div>
+              </div>
+              <div class="home-arch-metric">
+                <div class="home-arch-metric-val">100%</div>
+                <div class="home-arch-metric-label">Audit Coverage</div>
+              </div>
+              <div class="home-arch-metric">
+                <div class="home-arch-metric-val">SHA-256</div>
+                <div class="home-arch-metric-label">Hash Integrity</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="home-security" id="security">
+      <div class="home-section-header">
+        <div class="home-section-label">SECURITY & COMPLIANCE</div>
+        <h2 class="home-section-title">Built for Classified Operations</h2>
+      </div>
+      <div class="home-security-grid">
+        <div class="home-security-item">
+          <div class="home-security-icon">🔒</div>
+          <div class="home-security-name">End-to-End Encryption</div>
+        </div>
+        <div class="home-security-item">
+          <div class="home-security-icon">📋</div>
+          <div class="home-security-name">Complete Audit Trail</div>
+        </div>
+        <div class="home-security-item">
+          <div class="home-security-icon">🛡️</div>
+          <div class="home-security-name">Role-Based Access</div>
+        </div>
+        <div class="home-security-item">
+          <div class="home-security-icon">⚖️</div>
+          <div class="home-security-name">Court-Admissible Output</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="home-footer-cta">
+      <h2 class="home-footer-title">Ready to Begin Investigation?</h2>
+      <p class="home-footer-desc">Access the full intelligence dashboard with live case data, real-time alerts, and graph exploration.</p>
+      <button class="home-hero-btn-primary home-footer-btn" id="home-enter-footer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Open Investigative Dashboard
+      </button>
+      <div class="home-footer-meta">
+        <span>NETRALINK CORE v3.1.0</span>
+        <span>·</span>
+        <span>NODE: IN-MH-01</span>
+        <span>·</span>
+        <span>CLEARANCE: TOP SECRET</span>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       DASHBOARD WRAPPER (hidden until home screen dismissed)
+  ══════════════════════════════════════════════════ -->
+  <div class="dashboard-wrapper" id="dashboard-wrapper" style="display:none;">
+
+  <!-- ══════════════════════════════════════════════════
+       CLASSIFIED STATUS BAR (very top, 28px)
+  ══════════════════════════════════════════════════ -->
+  <div class="status-bar">
+    <div class="status-left">
+      <span class="status-dot active"></span>
+      <span>SYSTEM ONLINE</span>
+      <span class="status-sep">·</span>
+      <span>CLEARANCE: TOP SECRET</span>
+      <span class="status-sep">·</span>
+      <span id="status-time" class="mono">--:--:-- IST</span>
+    </div>
+    <div class="status-right">
+      <span>NETRALINK CORE v3.1.0</span>
+      <span class="status-sep">·</span>
+      <span>NODE: IN-MH-01</span>
+      <span class="status-sep">·</span>
+      <span class="status-dot critical"></span>
+      <span class="critical-text">4 ALERTS ACTIVE</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       TOP APPLICATION BAR
+  ══════════════════════════════════════════════════ -->
+  <header class="top-bar">
+    <div class="brand-section">
+      <div class="brand-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="4" fill="#1f6feb" opacity="0.15"/>
+          <rect x="0.5" y="0.5" width="27" height="27" rx="3.5" stroke="#1f6feb" stroke-opacity="0.6"/>
+          <path d="M7 14h4.5M14 7v4.5M14 16.5V21M16.5 14H21M14 14m-2 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0z" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">NETRALINK <span class="brand-ai">AI</span></div>
+        <div class="brand-sub">Crime Intelligence &amp; Knowledge Graph Engine</div>
+      </div>
+    </div>
+
+    <div class="case-pill">
+      <div class="case-pill-label">ACTIVE CASE</div>
+      <select id="case-selector" class="case-select">
+        <option value="INV-ECLIPSE-2026">CR-2026-MP-0482 · Operation Eclipse</option>
+      </select>
+      <div class="threat-chip" id="case-threat-badge">
+        <span class="threat-indicator"></span>
+        CRITICAL
+      </div>
+    </div>
+
+    <div class="user-section">
+      <div class="user-meta">
+        <div class="user-name" id="user-display-name">Insp. A. K. Singh</div>
+        <div class="user-role" id="user-display-role">Senior Investigator</div>
+      </div>
+      <div class="user-avatar">AK</div>
+      <div class="online-indicator"></div>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════
+       MASTER WORKSPACE
+  ══════════════════════════════════════════════════ -->
+  <div class="app-container">
+
+    <!-- ── LEFT SIDEBAR ── -->
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+
+        <nav class="sidebar-nav">
+          <div class="nav-section">
+            <div class="nav-section-label">Investigation Core</div>
+            <button class="nav-item active" data-view="overview">
+              <i data-lucide="layout-dashboard" class="nav-icon"></i>
+              <span>Overview</span>
+            </button>
+            <button class="nav-item" data-view="evidence">
+              <i data-lucide="folder-open" class="nav-icon"></i>
+              <span>Evidence Hub</span>
+              <span class="nav-count" id="badge-evidence-count">5</span>
+            </button>
+            <button class="nav-item" data-view="pipeline">
+              <i data-lucide="cpu" class="nav-icon"></i>
+              <span>Intelligence Pipeline</span>
+              <span class="nav-pill active-pill">LIVE</span>
+            </button>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-label">Entity Intelligence</div>
+            <button class="nav-item" data-view="entities">
+              <i data-lucide="users" class="nav-icon"></i>
+              <span>Entities Explorer</span>
+            </button>
+            <button class="nav-item" data-view="resolution">
+              <i data-lucide="git-merge" class="nav-icon"></i>
+              <span>Resolution Workbench</span>
+              <span class="nav-count warn" id="badge-resolution-count">3</span>
+            </button>
+            <button class="nav-item" data-view="graph">
+              <i data-lucide="share-2" class="nav-icon"></i>
+              <span>Temporal Graph</span>
+            </button>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-label">Analytical Lenses</div>
+            <button class="nav-item" data-view="lenses">
+              <i data-lucide="layers" class="nav-icon"></i>
+              <span>7 Crime Lenses</span>
+            </button>
+            <button class="nav-item" data-view="crosscrime">
+              <i data-lucide="zap" class="nav-icon"></i>
+              <span>Cross-Crime Radar</span>
+              <span class="nav-pill danger-pill">NEXUS</span>
+            </button>
+            <button class="nav-item" data-view="map">
+              <i data-lucide="map-pin" class="nav-icon"></i>
+              <span>Geo Movement Map</span>
+            </button>
+          </div>
+
+          <div class="nav-section">
+            <div class="nav-section-label">Leads &amp; Accountability</div>
+            <button class="nav-item" data-view="leads">
+              <i data-lucide="target" class="nav-icon"></i>
+              <span>Explainable Leads</span>
+              <span class="nav-count" id="badge-leads-count">1</span>
+            </button>
+            <button class="nav-item" data-view="alerts">
+              <i data-lucide="bell-ring" class="nav-icon"></i>
+              <span>Priority Alerts</span>
+              <span class="nav-count danger" id="badge-alerts-count">4</span>
+            </button>
+            <button class="nav-item" data-view="audit">
+              <i data-lucide="shield-check" class="nav-icon"></i>
+              <span>Audit Trail</span>
+            </button>
+          </div>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="case-intel">
+            <div class="case-intel-label">CASE INTELLIGENCE SCORE</div>
+            <div class="case-intel-bar">
+              <div class="case-intel-fill" style="width: 72%"></div>
+            </div>
+            <div class="case-intel-meta">
+              <span>72% Coverage</span>
+              <span>3 Gaps</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- ── MAIN VIEW VIEWPORT ── -->
+    <main class="view-viewport">
+
+      <!-- ─────────────────────────────────
+           1. OVERVIEW
+      ───────────────────────────────── -->
+      <section class="view-panel active" id="view-overview">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Operation Eclipse · Overview</div>
+            <h1 class="view-title" id="ov-case-title">Cross-State Syndicate Nexus</h1>
+            <p class="view-subtitle" id="ov-case-desc">Multi-jurisdictional probe targeting narcotics distribution, Hawala layering &amp; vehicle theft.</p>
+          </div>
+          <div class="view-actions">
+            <button class="btn btn-outline" id="btn-seed-demo">
+              <i data-lucide="refresh-cw" size="14"></i> Reset Demo
+            </button>
+            <button class="btn btn-primary" id="btn-quick-run-pipeline">
+              <i data-lucide="zap" size="14"></i> Run Pipeline
+            </button>
+          </div>
+        </div>
+
+        <div class="overview-body">
+          <!-- KPI Row -->
+          <div class="kpi-strip">
+            <div class="kpi-block">
+              <div class="kpi-icon-wrap blue"><i data-lucide="file-text" size="16"></i></div>
+              <div class="kpi-data">
+                <div class="kpi-number" id="ov-kpi-evidence">5</div>
+                <div class="kpi-label">Evidence Records</div>
+                <div class="kpi-sub">FIR, CDR, Bank &amp; Geo</div>
+              </div>
+            </div>
+            <div class="kpi-divider"></div>
+            <div class="kpi-block">
+              <div class="kpi-icon-wrap purple"><i data-lucide="circle-dot" size="16"></i></div>
+              <div class="kpi-data">
+                <div class="kpi-number" id="ov-kpi-nodes">3,980</div>
+                <div class="kpi-label">Graph Nodes</div>
+                <div class="kpi-sub">Persons, Devices, Accounts</div>
+              </div>
+            </div>
+            <div class="kpi-divider"></div>
+            <div class="kpi-block">
+              <div class="kpi-icon-wrap green"><i data-lucide="git-branch" size="16"></i></div>
+              <div class="kpi-data">
+                <div class="kpi-number" id="ov-kpi-edges">56,750</div>
+                <div class="kpi-label">Evidence Edges</div>
+                <div class="kpi-sub">Temporal Multi-Relational</div>
+              </div>
+            </div>
+            <div class="kpi-divider"></div>
+            <div class="kpi-block critical-kpi">
+              <div class="kpi-icon-wrap red"><i data-lucide="alert-triangle" size="16"></i></div>
+              <div class="kpi-data">
+                <div class="kpi-number danger-num">1</div>
+                <div class="kpi-label">Bridge Nexus Flagged</div>
+                <div class="kpi-sub">Rahul Sharma @ Guddu · Score 0.89</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom grid -->
+          <div class="overview-grid">
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title">Active Investigative Leads</span>
+                <span class="chip chip-orange">HUMAN REVIEW REQUIRED</span>
+              </div>
+              <div class="card-body" id="ov-leads-summary">
+                <div class="empty-state-small">Loading leads...</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title">Crime Lenses Active</span>
+              </div>
+              <div class="card-body" id="ov-lenses-summary">
+                <div class="lens-row">
+                  <div class="lens-dot blue"></div>
+                  <div class="lens-info">
+                    <div class="lens-name">Cross-Crime Syndicate</div>
+                    <div class="lens-desc">High-Betweenness Broker · Archetype 07</div>
+                  </div>
+                  <div class="lens-bar"><div class="lens-fill" style="width:89%"></div></div>
+                  <div class="lens-pct">89%</div>
+                </div>
+                <div class="lens-row">
+                  <div class="lens-dot amber"></div>
+                  <div class="lens-info">
+                    <div class="lens-name">Money Laundering</div>
+                    <div class="lens-desc">Structuring &lt;₹50K · Layering</div>
+                  </div>
+                  <div class="lens-bar"><div class="lens-fill" style="width:62%"></div></div>
+                  <div class="lens-pct">62%</div>
+                </div>
+                <div class="lens-row">
+                  <div class="lens-dot purple"></div>
+                  <div class="lens-info">
+                    <div class="lens-name">Illicit Supply Chain</div>
+                    <div class="lens-desc">Narcotics Wholesaling</div>
+                  </div>
+                  <div class="lens-bar"><div class="lens-fill" style="width:41%"></div></div>
+                  <div class="lens-pct">41%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           2. EVIDENCE HUB
+      ───────────────────────────────── -->
+      <section class="view-panel" id="view-evidence">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Evidence Hub</div>
+            <h1 class="view-title">Evidence Ingestion &amp; Chain-of-Custody</h1>
+            <p class="view-subtitle">SHA-256 verified records with cryptographic integrity tracking.</p>
+          </div>
+          <div class="view-actions">
+            <button class="btn btn-outline" id="btn-seed-demo-ev">
+              <i data-lucide="refresh-cw" size="14"></i> Reload Demo
+            </button>
+            <button class="btn btn-primary" id="btn-open-ingest-modal">
+              <i data-lucide="plus" size="14"></i> Ingest Record
+            </button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Record ID</th><th>Type</th><th>Source Ref</th>
+                <th>Title</th><th>SHA-256 Hash</th><th>Ingested</th><th></th>
+              </tr>
+            </thead>
+            <tbody id="evidence-table-body">
+              <tr><td colspan="7" class="loading-cell">Loading evidence records...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           3. PIPELINE
+      ───────────────────────────────── -->
+      <section class="view-panel" id="view-pipeline">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Intelligence Pipeline</div>
+            <h1 class="view-title">11-Stage Processing Pipeline</h1>
+            <p class="view-subtitle">Raw multimodal records → resolved entities → temporal graph → leads.</p>
+          </div>
+          <div class="view-actions">
+            <button class="btn btn-primary" id="btn-run-full-pipeline">
+              <i data-lucide="play" size="14"></i> Execute Pipeline
+            </button>
+          </div>
+        </div>
+        <div class="pipeline-body">
+          <div class="kpi-strip compact" id="pipeline-kpi-row">
+            <div class="kpi-block sm"><div class="kpi-number sm" id="pip-docs">5</div><div class="kpi-label">Documents</div></div>
+            <div class="kpi-divider"></div>
+            <div class="kpi-block sm"><div class="kpi-number sm" id="pip-entities">89</div><div class="kpi-label">Entities Resolved</div></div>
+            <div class="kpi-divider"></div>
+            <div class="kpi-block sm"><div class="kpi-number sm" id="pip-edges">56,750</div><div class="kpi-label">Graph Edges</div></div>
+            <div class="kpi-divider"></div>
+            <div class="kpi-block sm"><div class="kpi-number sm danger-num" id="pip-alerts">4</div><div class="kpi-label">Alerts Raised</div></div>
+          </div>
+          <div class="pipeline-stages" id="pipeline-stages-container">
+            <div class="loading-cell">Loading pipeline status...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           4. ENTITIES EXPLORER
+      ───────────────────────────────── -->
+      <section class="view-panel" id="view-entities">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Entity Intelligence</div>
+            <h1 class="view-title">Entities Explorer</h1>
+            <p class="view-subtitle">Mentioned vs. resolved canonical entities. Disambiguation across FIRs and CDRs.</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Person Name</th><th>Designation / Occupation</th><th>Known Aliases</th>
+                <th>Devices</th><th>Accounts</th><th>Vehicles</th><th>Status</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="entities-table-body">
+              <tr><td colspan="8" class="loading-cell">Loading entity directory...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           5. RESOLUTION WORKBENCH
+      ───────────────────────────────── -->
+      <section class="view-panel" id="view-resolution">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Entity Intelligence · Resolution</div>
+            <h1 class="view-title">Resolution Workbench</h1>
+            <p class="view-subtitle">Human-in-the-loop candidate matching. Review signals, confirm aliases, or flag for audit.</p>
+          </div>
+        </div>
+        <div class="resolution-body" id="resolution-candidates-container">
+          <div class="loading-cell">Loading resolution candidates...</div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           6. TEMPORAL GRAPH (D3.js Force Engine)
+      ───────────────────────────────── -->
+      <section class="view-panel fill-panel" id="view-graph">
+        <div class="graph-workspace">
+
+          <!-- Left: Canvas -->
+          <div class="graph-canvas-col">
+
+            <!-- Floating toolbar -->
+            <div class="graph-toolbar">
+              <div class="toolbar-group">
+                <button class="tool-btn" id="hud-zoom-in" title="Zoom In">
+                  <i data-lucide="zoom-in" size="14"></i>
+                </button>
+                <button class="tool-btn" id="hud-zoom-out" title="Zoom Out">
+                  <i data-lucide="zoom-out" size="14"></i>
+                </button>
+                <button class="tool-btn" id="hud-fit" title="Fit All">
+                  <i data-lucide="maximize-2" size="14"></i>
+                </button>
+              </div>
+              <div class="toolbar-sep"></div>
+              <div class="toolbar-group">
+                <select id="hud-layout-select" class="tool-select">
+                  <option value="physics">Force Directed</option>
+                  <option value="circle">Concentric / Radial</option>
+                  <option value="hierarchical">Tree / Hierarchical</option>
+                </select>
+              </div>
+              <div class="toolbar-sep"></div>
+              <div class="toolbar-group search-group">
+                <i data-lucide="search" size="13" class="search-icon"></i>
+                <input type="text" id="hud-search-input" class="tool-input" placeholder="Search Person Name or Keyword..." />
+                <button class="tool-btn accent" id="hud-btn-search">Focus</button>
+              </div>
+              <div class="toolbar-sep"></div>
+              <button class="tool-btn" id="hud-btn-hidden-paths" title="Find Hidden Links">
+                <i data-lucide="git-branch-plus" size="14"></i>
+                <span>Hidden Links</span>
+              </button>
+            </div>
+
+            <!-- D3.js Force Canvas Container -->
+            <div id="cy-canvas"></div>
+
+            <!-- Legend -->
+            <div class="graph-legend">
+              <div class="legend-row">
+                <div class="legend-node" style="background:#388bfd"></div>
+                <span>Person</span>
+              </div>
+              <div class="legend-row">
+                <div class="legend-node" style="background:#3fb950"></div>
+                <span>Phone</span>
+              </div>
+              <div class="legend-row">
+                <div class="legend-node" style="background:#d29922"></div>
+                <span>Account</span>
+              </div>
+              <div class="legend-row">
+                <div class="legend-node" style="background:#bc8cff"></div>
+                <span>Vehicle</span>
+              </div>
+              <div class="legend-row">
+                <div class="legend-node" style="background:#f85149"></div>
+                <span>Location</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Inspector Panel -->
+          <aside class="inspector-panel">
+            <div class="inspector-header">
+              <div class="inspector-title-wrap">
+                <div class="inspector-title" id="drawer-heading">Entity Inspector</div>
+                <div class="inspector-badge" id="drawer-type-badge">Select a node</div>
+              </div>
+              <i data-lucide="x" size="16" class="inspector-close" id="inspector-close-btn"></i>
+            </div>
+            <div class="inspector-body" id="drawer-content">
+              <div class="inspector-empty">
+                <i data-lucide="mouse-pointer-click" size="32"></i>
+                <p>Click any node or edge on the graph to inspect its intelligence dossier.</p>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           7. CRIME LENSES
+      ───────────────────────────────── -->
+      <section class="view-panel" id="view-lenses">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Analytical Lenses</div>
+            <h1 class="view-title">7 Crime-Specific Intelligence Lenses</h1>
+            <p class="view-subtitle">The crime bucket changes the lens, not the graph. Same evidence, 7 analytical models.</p>
+          </div>
+        </div>
+        <div class="lenses-grid" id="lenses-cards-container">
+          <div class="loading-cell">Loading crime lenses...</div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           8. CROSS-CRIME RADAR
+      ───────────────────────────────── -->
+      <section class="view-panel" id="view-crosscrime">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Analytical Lenses · Archetype 07</div>
+            <h1 class="view-title">Cross-Crime Organised Syndicate Radar</h1>
+            <p class="view-subtitle">Identifies high-betweenness bridge entities operating across independent criminal ecosystems.</p>
+          </div>
+        </div>
+        <div class="crosscrime-body">
+          <div class="alert-card critical-card">
+            <div class="alert-card-header">
+              <div class="alert-icon-wrap"><i data-lucide="alert-octagon" size="18"></i></div>
+              <div>
+                <div class="alert-card-title">Bridge Candidate: Rahul Sharma @ Guddu</div>
+                <div class="mono small-text">Rahul Sharma @ Guddu · Network Participation Coefficient: <strong class="danger-text">0.89</strong></div>
+              </div>
+              <div class="ml-auto">
+                <span class="chip chip-red">CRITICAL NEXUS</span>
+              </div>
+            </div>
+            <div class="alert-card-body">
+              <p>Subject bridges <strong>Narcotics Wholesaling</strong>, <strong>Hawala Structuring</strong>, <strong>Vehicle Fencing</strong>, and <strong>Cyber Extortion</strong>.</p>
+              <div class="alert-actions">
+                <button class="btn btn-primary btn-sm" onclick="window.netralinkApp.focusGraphEntity('Rahul Sharma @ Guddu')">
+                  <i data-lucide="share-2" size="12"></i> View in Graph
+                </button>
+                <button class="btn btn-outline btn-sm" onclick="window.netralinkApp.openHiddenPathsModal('Rahul Sharma @ Guddu', 'Vikram Sethi @ Langda')">
+                  <i data-lucide="git-branch-plus" size="12"></i> Trace Cross-Domain Path
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Cross-Crime Intersection Matrix</span>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Crime Domain Pair</th><th>Bridge Entity</th><th>Correlation</th><th>Bridge Score</th>
+                </tr>
+              </thead>
+              <tbody id="cross-crime-matrix-body">
+                <tr><td colspan="4" class="loading-cell">Loading matrix...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           9. EXPLAINABLE LEADS
+      ───────────────────────────────── -->
+      <section class="view-panel" id="view-leads">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Leads &amp; Accountability</div>
+            <h1 class="view-title">Explainable Leads &amp; Actionable Intelligence</h1>
+            <p class="view-subtitle">Traceable findings — every assertion links to primary police records, CDRs, and banking logs.</p>
+          </div>
+        </div>
+        <div class="leads-body" id="leads-container">
+          <div class="loading-cell">Loading leads...</div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           10. GEO MAP
+      ───────────────────────────────── -->
+      <section class="view-panel" id="view-map">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Analytical Lenses · Geospatial</div>
+            <h1 class="view-title">Geospatial Movement &amp; Co-Location Intelligence</h1>
+            <p class="view-subtitle">Suspect trajectory across transit corridors, safehouses, and crime scenes.</p>
+          </div>
+        </div>
+        <div class="map-body" id="map-container">
+          <div class="loading-cell">Loading geospatial data...</div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           11. PRIORITY ALERTS
+      ───────────────────────────────── -->
+      <section class="view-panel" id="view-alerts">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Leads &amp; Accountability · Alerts</div>
+            <h1 class="view-title">Priority Intelligence Alerts</h1>
+            <p class="view-subtitle">Automated alerts: cross-crime bridges, rapid layering, pre-incident communication bursts.</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Priority</th><th>Alert</th><th>Target</th>
+                <th>Description</th><th>Evidence</th><th>Status</th><th></th>
+              </tr>
+            </thead>
+            <tbody id="alerts-table-body">
+              <tr><td colspan="7" class="loading-cell">Loading alerts...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────
+           12. AUDIT TRAIL
+      ───────────────────────────────── -->
+      <section class="view-panel" id="view-audit">
+        <div class="view-header">
+          <div>
+            <div class="view-breadcrumb">Leads &amp; Accountability · Audit</div>
+            <h1 class="view-title">Tamper-Evident Audit Trail</h1>
+            <p class="view-subtitle">Cryptographically hashed record of every investigator action, upload, and AI event.</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th><th>Investigator</th><th>Role</th>
+                <th>Action</th><th>Target</th><th>Details</th><th>SHA-256</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <tr><td colspan="7" class="loading-cell">Loading audit trail...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  </div> <!-- END dashboard-wrapper -->
+
+  <!-- ══════════════════════════════════════════════════
+       MODALS
+  ══════════════════════════════════════════════════ -->
+
+  <!-- Hidden Paths -->
+  <div class="modal-backdrop" id="modal-paths">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Find Hidden Associative Paths</div>
+          <div class="modal-sub">Discover non-obvious connections between two entities in the knowledge graph.</div>
+        </div>
+        <button class="modal-close-btn" onclick="window.netralinkApp.closeModals()">
+          <i data-lucide="x" size="16"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Source Person Name</label>
+            <input type="text" id="path-source-input" class="form-input" value="Rahul Sharma @ Guddu" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Target Person Name</label>
+            <input type="text" id="path-target-input" class="form-input" value="Vikram Sethi @ Langda" />
+          </div>
+          <button class="btn btn-primary" id="btn-run-pathfinding" style="align-self:flex-end">
+            <i data-lucide="search" size="14"></i> Discover Paths
+          </button>
+        </div>
+        <div id="path-results-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Human Review -->
+  <div class="modal-backdrop" id="modal-review">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Human Review Decision Terminal</div>
+          <div class="modal-sub">This decision will be permanently recorded in the audit trail.</div>
+        </div>
+        <button class="modal-close-btn" onclick="window.netralinkApp.closeModals()">
+          <i data-lucide="x" size="16"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="review-lead-meta" style="margin-bottom: 16px;"></div>
+        <div class="form-group">
+          <label class="form-label">Investigator Review Rationale <span class="required">*mandatory for audit trail</span></label>
+          <textarea id="review-reason-input" class="form-textarea" rows="4" placeholder="Document legal justification, cross-verification, or grounds for dismissal..."></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-danger-outline btn-sm" id="btn-decision-dismiss">
+            <i data-lucide="x-circle" size="13"></i> Dismiss Lead
+          </button>
+          <button class="btn btn-outline btn-sm" id="btn-decision-flag">
+            <i data-lucide="flag" size="13"></i> Flag for Senior Review
+          </button>
+          <button class="btn btn-primary btn-sm" id="btn-decision-accept">
+            <i data-lucide="check-circle" size="13"></i> Accept as Actionable
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ingest Evidence -->
+  <div class="modal-backdrop" id="modal-ingest-evidence">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Ingest New Evidence Record</div>
+          <div class="modal-sub">SHA-256 integrity hash computed automatically on ingest.</div>
+        </div>
+        <button class="modal-close-btn" onclick="window.netralinkApp.closeModals()">
+          <i data-lucide="x" size="16"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Record Type &amp; Source Reference</label>
+          <input type="text" id="ingest-ref-input" class="form-input" value="FIR-LIVE-089" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Record Text / Content</label>
+          <textarea id="ingest-content-input" class="form-textarea" rows="5" placeholder="Enter police record narrative in English, Hindi, Urdu, Tamil..."></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="btn-submit-evidence">
+            <i data-lucide="upload" size="14"></i> Ingest &amp; Compute SHA-256
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Init Lucide icons after DOM is ready -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      // Live clock
+      function updateClock() {
+        const now = new Date();
+        const t = now.toLocaleTimeString('en-IN', { hour12: false, timeZone: 'Asia/Kolkata' });
+        const el = document.getElementById('status-time');
+        if (el) el.textContent = t + ' IST';
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    });
+  </script>
+
+  <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+{
+  "purpose": "Model-driven synthetic dataset. No crime-bucket labels and no bucket-conditioned generation.",
+  "model_inputs_and_targets": {
+    "NER": [
+      "reports.csv",
+      "digital_records.csv",
+      "ner_labels.csv"
+    ],
+    "entity_resolution": [
+      "reports.csv",
+      "digital_records.csv",
+      "persons.csv",
+      "phones.csv",
+      "accounts.csv",
+      "locations.csv"
+    ],
+    "event_extraction": [
+      "reports.csv",
+      "digital_records.csv",
+      "events.csv",
+      "event_labels.csv"
+    ],
+    "R-GCN_HGT": [
+      "graph_edges.csv",
+      "kg/train.txt",
+      "kg/valid.txt",
+      "kg/test.txt"
+    ],
+    "temporal_GNN": [
+      "communications.csv",
+      "transactions.csv",
+      "geo_events.csv",
+      "events.csv",
+      "graph_edges.csv"
+    ],
+    "link_prediction": [
+      "splits/hidden_train.csv",
+      "splits/hidden_valid.csv",
+      "splits/hidden_test.csv",
+      "labels/link_prediction_labels.csv"
+    ],
+    "anomaly_detection": [
+      "transactions.csv",
+      "labels/anomaly_labels.csv"
+    ],
+    "community_detection": [
+      "graph_edges.csv"
+    ],
+    "ULTRA_comparison": [
+      "kg/train.txt",
+      "kg/valid.txt",
+      "kg/test.txt"
+    ]
+  },
+  "counts": {
+    "persons": 1000,
+    "phones": 1200,
+    "devices": 700,
+    "accounts": 1200,
+    "vehicles": 400,
+    "locations": 180,
+    "organizations": 120,
+    "items": 900,
+    "reports": 1200,
+    "communications": 12000,
+    "transactions": 10750,
+    "geo_events": 6000,
+    "digital_records": 6000,
+    "events": 8000,
+    "visible_graph_edges": 40650,
+    "hidden_link_positives": 400
+  },
+  "design_notes": [
+    "Latent groups are generic relational affinity only; they are not crime buckets.",
+    "Patterns are generated from repeated relationships, temporal proximity, co-location, communication, account/device reuse and graph connectivity.",
+    "Hidden links are held out for link-prediction evaluation.",
+    "All data is fictional and synthetic."
+  ]
+}
